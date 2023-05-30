@@ -1,0 +1,246 @@
+1.2 Queries (warm-up)
+Especifica queries em MongoDB para responder às seguintes questões:
+
+. Quantos registos estão na base de dados;
+db.plantas.find().count() 
+resultado: 29617
+
+. Quantos registos de plantação se encontram na freguesia "São Domingos de Rana"?
+db.plantas.find({"Freguesia":"São Domingos de Rana"}).count()
+resultado: 5903
+
+. Qual a lista de freguesias (ordenada alfabeticamente e sem repetições)?
+db.plantas.distinct("Freguesia").sort()
+resultado: 
+[
+        "",
+        "Abóboda",
+        "Alcabideche",
+        "São Domingos de Rana",
+        "U.F. Carcavelos e Parede",
+        "U.F. Cascais e Estoril"
+]
+
+
+. Qual a distribuição dos registos por freguesia (quantos registos em cada freguesia)
+db.plantas.aggregate([
+    {
+        $group: {
+            _id: "$Freguesia",
+            count: { $sum: 1 }
+        }
+    },
+    {
+        $sort: { count: 1 }
+    }
+])
+
+resultado:
+{ "_id" : "Abóboda", "count" : 2 }
+{ "_id" : "", "count" : 26 }
+{ "_id" : "Alcabideche", "count" : 4034 }
+{ "_id" : "São Domingos de Rana", "count" : 5903 }
+{ "_id" : "U.F. Carcavelos e Parede", "count" : 7629 }
+{ "_id" : "U.F. Cascais e Estoril", "count" : 12023 }
+
+
+. Qual a distribuição dos registos por espécie?
+db.plantas.aggregate([
+      {
+        $group: {
+          _id: "$Espécie",
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $sort: { count: -1 }
+      }
+    ]);
+
+resultado:
+{ "_id" : "platano", "count" : 4053 }
+{ "_id" : "lodão", "count" : 2816 }
+{ "_id" : "palmeira das canarias", "count" : 1329 }
+{ "_id" : "a identificar", "count" : 1311 }
+{ "_id" : "ameixoeira de jardim", "count" : 1015 }
+{ "_id" : "choupo negro", "count" : 976 }
+{ "_id" : "tipuana", "count" : 946 }
+{ "_id" : "bordo negundo", "count" : 916 }
+{ "_id" : "grevilia", "count" : 776 }
+{ "_id" : "pinheiro manso", "count" : 751 }
+{ "_id" : "melia", "count" : 715 }
+{ "_id" : "platano bastardo", "count" : 707 }
+{ "_id" : "jacaranda", "count" : 684 }
+{ "_id" : "tilia", "count" : 653 }
+{ "_id" : "cipreste", "count" : 652 }
+{ "_id" : "olaia", "count" : 567 }
+{ "_id" : "pinheiro do alepo", "count" : 559 }
+{ "_id" : "pereira de jardim", "count" : 488 }
+{ "_id" : "choupo branco", "count" : 473 }
+{ "_id" : "cevadilha", "count" : 446 }
+{ "_id" : "ligustro", "count" : 429 }
+{ "_id" : "freixo", "count" : 411 }
+{ "_id" : "lagerstroemia", "count" : 406 }
+{ "_id" : "aroeira", "count" : 368 }
+{ "_id" : "casuarina", "count" : 365 }
+{ "_id" : "oliveira", "count" : 357 }
+{ "_id" : "bordo da noruega", "count" : 305 }
+{ "_id" : "cipreste comum", "count" : 281 }
+{ "_id" : "palmeira de leque", "count" : 240 }
+{ "_id" : "pimenteira bastarda", "count" : 216 }
+{ "_id" : "yuca", "count" : 200 }
+{ "_id" : "castanheiro da india", "count" : 193 }
+{ "_id" : "liquidambar", "count" : 182 }
+{ "_id" : "acer", "count" : 179 }
+{ "_id" : "eucalipto", "count" : 174 }
+{ "_id" : "photinia", "count" : 151 }
+{ "_id" : "choupo", "count" : 145 }
+{ "_id" : "Jacaranda", "count" : 141 }
+{ "_id" : "ginkgo", "count" : 139 }
+{ "_id" : "acacia do japão", "count" : 138 }
+{ "_id" : "carvalho", "count" : 130 }
+{ "_id" : "balão de s. joão", "count" : 129 }
+{ "_id" : "árvore do gelo", "count" : 126 }
+{ "_id" : "tilia de folhas pequenas", "count" : 115 }
+{ "_id" : "nespereira", "count" : 107 }
+{ "_id" : "acacia", "count" : 104 }
+{ "_id" : "tamargueira", "count" : 103 }
+{ "_id" : "washingtonia filifera", "count" : 102 }
+{ "_id" : "acacia bastarda", "count" : 101 }
+{ "_id" : "cerejeira japonesa", "count" : 101 }
+{ "_id" : "borracheira", "count" : 93 }
+{ "_id" : "espinheiro da virginia", "count" : 93 }
+{ "_id" : "catalpa", "count" : 91 }
+{ "_id" : "laranjeira", "count" : 89 }
+{ "_id" : "tulipeiro", "count" : 79 }
+{ "_id" : "zambujeiro", "count" : 78 }
+{ "_id" : "metrosidero", "count" : 72 }
+{ "_id" : "magnolia", "count" : 71 }
+{ "_id" : "palmeira da china", "count" : 71 }
+{ "_id" : "catalpa bola", "count" : 66 }
+{ "_id" : "tuia", "count" : 64 }
+{ "_id" : "mioporum", "count" : 59 }
+{ "_id" : "amoreira", "count" : 58 }
+{ "_id" : "pittosporum", "count" : 57 }
+{ "_id" : "prunus", "count" : 57 }
+{ "_id" : "pereira", "count" : 56 }
+{ "_id" : "zelcova", "count" : 51 }
+{ "_id" : "Limpa-garrafas", "count" : 49 }
+{ "_id" : "dragoeiro", "count" : 48 }
+{ "_id" : "tamareira", "count" : 47 }
+{ "_id" : "Palmeira", "count" : 46 }
+{ "_id" : "cupressocyparis", "count" : 46 }
+{ "_id" : "araucaria do chile", "count" : 46 }
+{ "_id" : "cedro do atlas", "count" : 45 }
+{ "_id" : "freixo europeu", "count" : 43 }
+{ "_id" : "árvore do fogo", "count" : 43 }
+{ "_id" : "salgueiro", "count" : 40 }
+{ "_id" : "ficus", "count" : 40 }
+{ "_id" : "alfarrobeira", "count" : 39 }
+{ "_id" : "cedro do buçaco", "count" : 38 }
+{ "_id" : "ficus benjamina", "count" : 37 }
+{ "_id" : "figueira", "count" : 36 }
+{ "_id" : "carvalho alvarinho", "count" : 35 }
+{ "_id" : "amieiro", "count" : 35 }
+{ "_id" : "viburnum", "count" : 35 }
+{ "_id" : "cipreste de monterey", "count" : 33 }
+{ "_id" : "Borracheira", "count" : 33 }
+{ "_id" : "bordo comum", "count" : 28 }
+{ "_id" : "oliveira do paraíso", "count" : 27 }
+{ "_id" : "pessegueiro", "count" : 26 }
+{ "_id" : "romanzeira", "count" : 26 }
+{ "_id" : "abacateiro", "count" : 25 }
+{ "_id" : "laranjeira doce", "count" : 25 }
+{ "_id" : "Laranjeira", "count" : 25 }
+{ "_id" : "sobreiro", "count" : 21 }
+{ "_id" : "pinheiro bravo", "count" : 20 }
+{ "_id" : "sophora pyramidalis", "count" : 19 }
+{ "_id" : "limoeiro", "count" : 19 }
+{ "_id" : "ulmeiro", "count" : 19 }
+{ "_id" : "palmeira de vassouras", "count" : 18 }
+{ "_id" : "aroeira vermelha", "count" : 17 }
+{ "_id" : "euonimus", "count" : 16 }
+{ "_id" : "ameixeira", "count" : 16 }
+{ "_id" : "freixo comum", "count" : 16 }
+{ "_id" : "amendoeira", "count" : 15 }
+{ "_id" : "pinheiro silvestre", "count" : 14 }
+{ "_id" : "chorisia", "count" : 13 }
+{ "_id" : "amoreira branca", "count" : 10 }
+{ "_id" : "Buganvilia", "count" : 9 }
+{ "_id" : "ailanto", "count" : 9 }
+{ "_id" : "zelha", "count" : 8 }
+{ "_id" : "hibisco", "count" : 8 }
+{ "_id" : "Biota", "count" : 8 }
+{ "_id" : "faia", "count" : 8 }
+{ "_id" : "tilia prateada", "count" : 7 }
+{ "_id" : "amoreira negra", "count" : 7 }
+{ "_id" : "laranjeira azeda", "count" : 7 }
+{ "_id" : "Bordo Prateado", "count" : 7 }
+{ "_id" : "Carpino", "count" : 7 }
+{ "_id" : "buganvilia", "count" : 6 }
+{ "_id" : "lodão americano", "count" : 6 }
+{ "_id" : "loureiro", "count" : 5 }
+{ "_id" : "eugenia", "count" : 5 }
+{ "_id" : "cedro", "count" : 5 }
+{ "_id" : "A identificar", "count" : 5 }
+{ "_id" : "roystonea", "count" : 5 }
+{ "_id" : "eritrina crista-de-galo", "count" : 4 }
+{ "_id" : "pata de vaca rosada", "count" : 4 }
+{ "_id" : "castanheiro", "count" : 4 }
+{ "_id" : "macieira", "count" : 4 }
+{ "_id" : "estrelicia gigante", "count" : 4 }
+{ "_id" : "betula", "count" : 4 }
+{ "_id" : "pinheiro das canarias", "count" : 4 }
+{ "_id" : "loureiro real", "count" : 3 }
+{ "_id" : "alfenheiro", "count" : 3 }
+{ "_id" : "washingtonia robusta", "count" : 3 }
+{ "_id" : "árvore de coral", "count" : 3 }
+{ "_id" : "dombeia", "count" : 3 }
+{ "_id" : "carvalho hibrido", "count" : 3 }
+{ "_id" : "plumeria", "count" : 3 }
+{ "_id" : "Hibisco", "count" : 3 }
+{ "_id" : "marmeleiro", "count" : 2 }
+{ "_id" : "choupo tremedor", "count" : 2 }
+{ "_id" : "abeto branco", "count" : 2 }
+{ "_id" : "planta do natal", "count" : 2 }
+{ "_id" : "medronheiro", "count" : 2 }
+{ "_id" : "bananeira", "count" : 2 }
+{ "_id" : "São Domingos de Rana", "count" : 2 }
+{ "_id" : "arbusto", "count" : 2 }
+{ "_id" : "buxo", "count" : 1 }
+{ "_id" : "diospiro", "count" : 1 }
+{ "_id" : "paulonia", "count" : 1 }
+{ "_id" : "rosa", "count" : 1 }
+{ "_id" : "boldo de jardim", "count" : 1 }
+{ "_id" : "figueira asiatica", "count" : 1 }
+{ "_id" : "melaleuca", "count" : 1 }
+{ "_id" : "damasqueiro", "count" : 1 }
+{ "_id" : "Aderno bastardo", "count" : 1 }
+{ "_id" : "cameleira", "count" : 1 }
+{ "_id" : "trombeteiro", "count" : 1 }
+{ "_id" : "aveleira", "count" : 1 }
+{ "_id" : "bambu", "count" : 1 }
+{ "_id" : "tuia-gigante", "count" : 1 }
+{ "_id" : "choupo hibrido", "count" : 1 }
+{ "_id" : "Lodão americano", "count" : 1 }
+{ "_id" : "abeto do norte", "count" : 1 }
+{ "_id" : "albizia", "count" : 1 }
+{ "_id" : "figueira da australia", "count" : 1 }
+{ "_id" : "tilia de folhas grandes", "count" : 1 }
+{ "_id" : "Cevadilha", "count" : 1 }
+{ "_id" : "criptomeria do japão", "count" : 1 }
+
+
+
+Para a persistência dos dados foi utilizado mongoDB. Antes de importar o ficheiro json ao mongo, os campos "Id" foram substituídos previamente por "_id" de modo a facilitar a busca e identificação através de queries.
+
+Para importar o ficheiro json ao mongo, foi utilizado este comando:
+mongoimport -d plantas -c plantas --file plantas.json --jsonArray 
+
+A cada vez que é criado um registo através do método post, busca-se o maior id contido até então, este id é incrementado e este novo id é usado para o novo registo. De forma a evitar a utilização de ids já existentes.
+
+Para utilizar cada serviço, é necessário efetuar o comando: npm install em cada pasta. Ou seja, no ex1 e no ex2.
+O nodemon já foi configurado devidamente nos ficheiros package.json de cada pasta, portanto, certifique que o nodemon também foi instalado. Caso não tenha sido, prossiga com npm i nodemon.
+Outros módulos importantes como mongoose para o ex1 e axios para o ex2 também devem ser instalados. Caso não seja feito através do npm install, prossiga com npm i axios e npm i mongoose.
+
+Com o nodemon instalado, basta utilizar o comando "nodemon" nos terminais referentes a cada pasta (ex1, ex2).
